@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- State when the button is activated (e.g., pressed) -->
+    <item android:state_pressed="true">
+        <ripple android:layout_width="wrap_content" android:color="?android:attr/colorControlHighlight">
+            <!-- Background color and border when pressed -->
+            <shape>
+                <solid android:color="?android:attr/colorButtonNormal" />
+                <corners android:radius="10dp" />
+                <stroke
+                    android:width="4dp"/>  <!-- Adjust the width of the border -->
+                android:color="#FF0000" /> <!-- Adjust the color of the border (red in this example) -->
+            </shape>
+        </ripple>
+    </item>
+
+    <!-- Default state when the button is not pressed -->
+    <item>
+        <shape>
+            <solid android:color="?android:attr/colorButtonNormal" />
+            <corners android:radius="10dp" />
+            <stroke
+                android:width="2dp"/>  <!-- Adjust the width of the border -->
+            android:color="#FF0000" /> <!-- Adjust the color of the border (red in this example) -->
+        </shape>
+    </item>
+</selector>

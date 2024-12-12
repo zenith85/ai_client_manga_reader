@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/floatingtool_background"
+    android:layout_gravity="center"
+    android:padding="8dp">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/PlusButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ripple_effect"
+        android:layout_marginBottom="8dp"
+        android:foreground="@drawable/baseline_zoom_in_24"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/MinusButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="7.5dp"
+        android:background="@drawable/ripple_effect"
+        android:foreground="@drawable/baseline_zoom_out_24"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Capture"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="7.5dp"
+        android:background="@drawable/toggle_button_background"
+        android:foregroundGravity="center"
+        android:foreground="@drawable/toggle_button_forground" />
+    <!-- Drag handle as 3 horizontal lines (hamburger icon) -->
+    <ImageView
+        android:id="@+id/DragPos"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/drag_handle"
+        android:contentDescription="Drag handle"
+        android:layout_gravity="center" />
+    </LinearLayout>

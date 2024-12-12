@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="toggle_on">#FFDD33</color> <!-- Example color when the button is "on" -->
+    <color name="toggle_off">#CCCCCC</color> <!-- Example color when the button is "off" -->
+</resources>

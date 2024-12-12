@@ -1,0 +1,26 @@
+<resources>
+    <!-- res/values/styles.xml -->
+    <style name="CustomActionModeTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize the ActionMode toolbar -->
+        <item name="actionModeBackground">@drawable/custom_action_mode_background</item>
+    </style>
+    <!-- Custom Action Mode Style -->
+    <style name="CustomActionModeStyle" parent="Widget.AppCompat.ActionMode">
+        <item name="background">@drawable/custom_action_mode_background</item> <!-- Your custom shape -->
+        <item name="titleTextStyle">@style/CustomActionModeTitleText</item> <!-- Custom text style -->
+    </style>
+
+    <style name="CustomActionModeTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item> <!-- Disable the Action Bar -->
+        <item name="windowNoTitle">true</item>  <!-- Optionally hide the title -->
+    </style>
+
+
+</resources>

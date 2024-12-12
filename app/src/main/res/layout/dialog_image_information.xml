@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="10dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    >
+
+    <!-- Close Button (X) positioned at the top-right -->
+    <ImageButton
+        android:id="@+id/close_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end|top"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/baseline_close_24" />
+
+    <!-- Content Container: Left side (image + text) and right image -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp">  <!-- Adjust top margin to give space from the close button -->
+
+        <!-- Left side: Vertical layout with image and text -->
+        <LinearLayout
+            android:layout_width="420dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <!-- ImageView on the left -->
+            <ImageView
+                android:id="@+id/left_image_view"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/rabbitpaw" />
+
+            <!-- Intro text below the left image -->
+            <TextView
+                android:id="@+id/intro_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/gmarketsansttfmedium"
+                android:text="This is my PAW"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <!-- Right side: Image to show (click to change) -->
+        <ImageView
+            android:id="@+id/right_image_view"
+            android:layout_width="136dp"
+            android:layout_height="154dp"
+            android:layout_gravity="bottom"
+            android:paddingEnd="15dp"
+            android:src="@drawable/spacerabbit" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/nextImageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Next Tip!"
+        android:textColor="#000" />
+
+    <!-- Text to change images -->
+
+</FrameLayout>
