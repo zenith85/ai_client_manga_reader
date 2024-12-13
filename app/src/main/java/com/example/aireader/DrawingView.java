@@ -26,6 +26,9 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DrawingView extends View {
     private static String TAG = "DrawingView ";
     public static boolean select_mode;
@@ -131,26 +134,82 @@ public class DrawingView extends View {
                         public void onOcrResult(String result) {
                             // Log OCR result or handle it as needed
                             Log.d(TAG, "OCR result: " + result);
-                            // Ensure UI updates happen on the main thread
+
+                            try {
+                                // Assuming 'result' is a JSON string like {"translated_result": "translated text here"}
+                                JSONObject jsonResponse = new JSONObject(result);
+
+                                // Extract the translated result
+                                String translatedText = jsonResponse.getString("translated_result");
+
+                                // Ensure UI updates happen on the main thread
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // This will be executed on the main thread
+                                        fillSnippet(currentRect, translatedText); // Update the UI with the translated text
+                                        copyTextToClipboard(translatedText); // Copy translated text to clipboard
+                                        currentRect = null;
+                                        invalidate(); // If you need to invalidate the UI
+                                    }
+                                });
+                            } catch (JSONException e) {
+                                Log.e(TAG, "Error parsing JSON: " + e.getMessage());
+                                // Handle parsing error, e.g., show an error message to the user
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Handle the error case on the main thread
+                                        fillSnippet(currentRect, "Error parsing response");
+                                        currentRect = null;
+                                        invalidate();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            // Handle any errors
+                            Log.e(TAG, "OCR Error: " + error);
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    // This will be executed on the main thread
-                                    fillSnippet(currentRect, result); // Update the UI here
-                                    copyTextToClipboard(result);
+                                    // Handle the error on the main thread
+                                    fillSnippet(currentRect, "OCR failed");
                                     currentRect = null;
                                     invalidate();
                                 }
                             });
                         }
-                        @Override
-                        public void onError(String error) {
-                            // Handle the error if OCR fails
-                            currentRect = null;
-                            Toast.makeText(getContext(), "UnknownError", Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, "OCR Error: " + error);
-                        }
                     });
+
+
+//                    AI_OCR_CLIENT.getOcrText(snippet, chosen_lang, new AI_OCR_CLIENT.OcrCallback() {
+//                        @Override
+//                        public void onOcrResult(String result) {
+//                            // Log OCR result or handle it as needed
+//                            Log.d(TAG, "OCR result: " + result);
+//                            // Ensure UI updates happen on the main thread
+//                            activity.runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    // This will be executed on the main thread
+//                                    fillSnippet(currentRect, result); // Update the UI here
+//                                    copyTextToClipboard(result);
+//                                    currentRect = null;
+//                                    invalidate();
+//                                }
+//                            });
+//                        }
+//                        @Override
+//                        public void onError(String error) {
+//                            // Handle the error if OCR fails
+//                            currentRect = null;
+//                            Toast.makeText(getContext(), "UnknownError", Toast.LENGTH_SHORT).show();
+//                            Log.e(TAG, "OCR Error: " + error);
+//                        }
+//                    });
                     Log.d(TAG, "Captured snippet: " + snippet.getWidth() + "x" + snippet.getHeight());
                 } else {
                     snippets.add(null);
