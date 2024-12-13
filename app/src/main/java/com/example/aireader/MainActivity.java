@@ -447,9 +447,9 @@ public class MainActivity extends AppCompatActivity implements AICallback {
         String lang_to = my_spinnerTo.getSelectedItem().toString();
         //drawingView.chosen_lang = selectedValue.equals("ENG") ? "en" : (selectedValue.equals("KOR") ? "ko" : "en");
         if (lang_from.equals("ENG") && lang_to.equals("KOR")){drawingView.LANG_DIRECTION="ENGKOR";}
-        if (lang_from.equals("KOR") && lang_to.equals("KOR")){drawingView.LANG_DIRECTION="KORENG";}
+        if (lang_from.equals("KOR") && lang_to.equals("ENG")){drawingView.LANG_DIRECTION="KORENG";}
         if (lang_from.equals("ENG") && lang_to.equals("ENG")){drawingView.LANG_DIRECTION="ENGENG";}
-        if (lang_from.equals("KOR") && lang_to.equals("ENG")){drawingView.LANG_DIRECTION="KORKOR";}
+        if (lang_from.equals("KOR") && lang_to.equals("KOR")){drawingView.LANG_DIRECTION="KORKOR";}
         Log.d(TAG,drawingView.LANG_DIRECTION);
     }
 }

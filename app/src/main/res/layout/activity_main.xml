@@ -65,7 +65,6 @@
                 android:foreground="@drawable/ic_launcher_foreground"
                 android:foregroundTint="@color/black"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/Refresh"
                 tools:ignore="MissingConstraints"
                 tools:layout_editor_absoluteY="0dp" />
@@ -75,20 +74,17 @@
                 android:layout_width="110dp"
                 android:layout_height="23dp"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="10dp"
-                app:layout_constraintStart_toEndOf="@+id/button_import_pdf"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintEnd_toStartOf="@+id/button_flip_lang"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteY="9dp" />
 
             <Spinner
                 android:id="@+id/my_spinnerTo"
                 android:layout_width="110dp"
                 android:layout_height="23dp"
-                android:layout_marginBottom="10dp"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/my_spinnerFrom" />
+                app:layout_constraintEnd_toStartOf="@+id/textView2"
+                tools:layout_editor_absoluteY="9dp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/Refresh"
@@ -96,24 +92,22 @@
                 android:layout_height="40dp"
                 android:background="@drawable/ripple_effect"
                 android:foreground="@drawable/baseline_refresh_24"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/button_turn_left"
-                tools:layout_editor_absoluteY="-1dp" />
+                android:layout_marginEnd="10dp"
+                tools:layout_editor_absoluteY="0dp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_import_pdf"
                 android:layout_width="57dp"
                 android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/ripple_effect"
                 android:text="Import"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
                 android:textColor="@color/black"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/my_spinnerFrom"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -123,7 +117,6 @@
                 android:background="@drawable/ripple_effect"
                 android:foreground="@drawable/arrow_right"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -135,10 +128,21 @@
                 android:background="@drawable/ripple_effect"
                 android:foreground="@drawable/arrow_left"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/button_turn_right" />
+                app:layout_constraintEnd_toStartOf="@+id/button_turn_right"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_flip_lang"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ripple_effect"
+                android:foreground="@drawable/baseline_compare_arrows_24"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/my_spinnerTo" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -146,13 +150,12 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gmarketsansttfbold"
                 android:gravity="center"
-                android:layout_marginBottom="5dp"
-                android:layout_marginStart="10dp"
                 android:text="달빛비전"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/black"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/my_spinnerTo" />
+                app:layout_constraintEnd_toStartOf="@+id/aitool"
+                tools:layout_editor_absoluteY="7dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
