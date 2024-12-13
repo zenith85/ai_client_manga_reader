@@ -2,9 +2,10 @@
     <string name="app_name">aiReader</string>
         <!-- Other string resources -->
     <string-array name="spinner_values">
-        <item>ENG</item>
-        <item>KOR</item>
-        <item>JAP</item>
+        <item>ENG to KOR</item>
+        <item>KOR to ENG</item>
+        <item>JAP to ENG</item>
+        <item>ENG to JAP</item>
         <item>V-JAP</item>
     </string-array>
         <string-array name="dropdown_items">

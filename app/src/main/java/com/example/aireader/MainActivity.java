@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity implements AICallback {
     private Uri fileUri;
     private AlertDialog textDialog;
 
-    private Spinner my_spinnerFrom;
-    private Spinner my_spinnerTo;
+    private Spinner lang_conv_spinner;
 
     private float originalScale = 1.0f;
     private float originalX = 0.0f;
@@ -254,17 +253,15 @@ public class MainActivity extends AppCompatActivity implements AICallback {
     }
 
     private void spinner_init() {
-        my_spinnerFrom = findViewById(R.id.my_spinnerFrom);
-        my_spinnerTo = findViewById(R.id.my_spinnerTo);
+        lang_conv_spinner = findViewById(R.id.lang_conv_spinner);
         String[] itemList = getResources().getStringArray(R.array.spinner_values);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        my_spinnerFrom.setAdapter(adapter);
-        my_spinnerTo.setAdapter(adapter);
+        lang_conv_spinner.setAdapter(adapter);
 
         // Spinner item selection handling
-        my_spinnerFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        lang_conv_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedValue = parent.getItemAtPosition(position).toString();
@@ -272,20 +269,6 @@ public class MainActivity extends AppCompatActivity implements AICallback {
                 Toast.makeText(MainActivity.this, "Selected: " + selectedValue, Toast.LENGTH_SHORT).show();
                 languageProvider();
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        my_spinnerTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedValue = parent.getItemAtPosition(position).toString();
-                //drawingView.chosen_lang = selectedValue.equals("ENG") ? "en" : (selectedValue.equals("KOR") ? "ko" : "en");
-                Toast.makeText(MainActivity.this, "Selected: " + selectedValue, Toast.LENGTH_SHORT).show();
-                languageProvider();
-            }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
@@ -443,13 +426,12 @@ public class MainActivity extends AppCompatActivity implements AICallback {
     }
 
     public void languageProvider(){
-        String lang_from = my_spinnerFrom.getSelectedItem().toString();
-        String lang_to = my_spinnerTo.getSelectedItem().toString();
+        String lang_from = lang_conv_spinner.getSelectedItem().toString();
         //drawingView.chosen_lang = selectedValue.equals("ENG") ? "en" : (selectedValue.equals("KOR") ? "ko" : "en");
-        if (lang_from.equals("ENG") && lang_to.equals("KOR")){drawingView.LANG_DIRECTION="ENGKOR";}
-        if (lang_from.equals("KOR") && lang_to.equals("ENG")){drawingView.LANG_DIRECTION="KORENG";}
-        if (lang_from.equals("ENG") && lang_to.equals("ENG")){drawingView.LANG_DIRECTION="ENGENG";}
-        if (lang_from.equals("KOR") && lang_to.equals("KOR")){drawingView.LANG_DIRECTION="KORKOR";}
+        if (lang_from.equals("ENG to KOR")){drawingView.LANG_DIRECTION="ENGKOR";}
+        if (lang_from.equals("KOR to ENG")){drawingView.LANG_DIRECTION="KORENG";}
+        if (lang_from.equals("ENG")){drawingView.LANG_DIRECTION="ENGENG";}
+        if (lang_from.equals("KOR")){drawingView.LANG_DIRECTION="KORKOR";}
         Log.d(TAG,drawingView.LANG_DIRECTION);
     }
 }
