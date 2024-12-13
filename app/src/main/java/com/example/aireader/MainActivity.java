@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements AICallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // Here you show the information dialogue
         // Show the custom dialog
         Show_Information_dialog customDialog = new Show_Information_dialog(this);
@@ -160,6 +161,8 @@ public class MainActivity extends AppCompatActivity implements AICallback {
         refreshButton.setOnClickListener(v -> {
             drawingView.clearRectangles();  // Clear rectangles from DrawingView
             resetView();  // Reset the zoom and position
+            EPDManager _EPDManager = new EPDManager(MainActivity.this);
+            _EPDManager.refreshScreen();
         });
 
         // Spinner initialization
