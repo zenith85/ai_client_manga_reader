@@ -33,7 +33,7 @@ public class DrawingView extends View {
     private static String TAG = "DrawingView ";
     public static boolean select_mode;
     private Paint paint;
-    public String chosen_lang;
+    public static String LANG_DIRECTION = "ENGENG";
     private Rect currentRect;
     private List<Rect> rectangles = new ArrayList<>();
     private List<Bitmap> snippets = new ArrayList<>();
@@ -129,7 +129,7 @@ public class DrawingView extends View {
                     // 3. Send the image to the server for OCR and get the text using the callback
                     // 4. get back the text and put it inside the box (rect)
 
-                    AI_OCR_CLIENT.getOcrText(snippet, chosen_lang, new AI_OCR_CLIENT.OcrCallback() {
+                    AI_OCR_CLIENT.getOcrText(snippet, LANG_DIRECTION, new AI_OCR_CLIENT.OcrCallback() {
                         @Override
                         public void onOcrResult(String result) {
                             // Log OCR result or handle it as needed
@@ -282,6 +282,11 @@ public class DrawingView extends View {
         rectangles.clear();
         snippets.clear();
         invalidate(); // Redraw the view
+    }
+
+    private boolean lang_segment() {
+
+        return true;
     }
 
     public List<Rect> getRectangles() {
