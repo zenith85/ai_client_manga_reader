@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements AICallback {
             if (v.isActivated()){
                 Log.d(TAG,"floating_tool is added to the view!");
                 mainLayout.addView(floatingTool);
+                floatingTool.setX(dm.widthPixels*xPercent);
+                floatingTool.setY(dm.heightPixels*yPercent);
                 // Initialize zoom buttons
                 Button zoomInButton = findViewById(R.id.PlusButton);
                 Button zoomOutButton = findViewById(R.id.MinusButton);
@@ -162,8 +164,8 @@ public class MainActivity extends AppCompatActivity implements AICallback {
         Button refreshButton = findViewById(R.id.Refresh);
         refreshButton.setOnClickListener(v -> {
             drawingView.clearRectangles();  // Clear rectangles from DrawingView
-            floatingTool.setX(drawingView.getWidth()-floatingTool.getWidth());
-            floatingTool.setY(refreshButton.getY()*(-1)+10);
+            floatingTool.setX(dm.widthPixels*xPercent);
+            floatingTool.setY(dm.heightPixels*yPercent);
             resetView();  // Reset the zoom and position
             EPDManager _EPDManager = new EPDManager(MainActivity.this);
             _EPDManager.refreshScreen();
