@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity implements AICallback {
         Button refreshButton = findViewById(R.id.Refresh);
         refreshButton.setOnClickListener(v -> {
             drawingView.clearRectangles();  // Clear rectangles from DrawingView
+            floatingTool.setX(drawingView.getWidth()-floatingTool.getWidth());
+            floatingTool.setY(refreshButton.getY()*(-1)+10);
             resetView();  // Reset the zoom and position
             EPDManager _EPDManager = new EPDManager(MainActivity.this);
             _EPDManager.refreshScreen();

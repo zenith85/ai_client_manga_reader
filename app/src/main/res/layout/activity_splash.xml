@@ -37,7 +37,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="396dp"
                     android:fontFamily="@font/gmarketsansttfbold"
-                    android:text="달빛비전"
+                    android:text="@string/app_name"
                     android:textColor="#000000"
                     android:textSize="38sp"
                     app:layout_constraintStart_toStartOf="parent"

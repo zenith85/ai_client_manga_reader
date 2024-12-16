@@ -7,27 +7,21 @@ import android.os.Process;
 import android.util.Log;
 
 public class EPDManager {
-
     private static final String TAG = "EpdManager";
-
     // Vendor-provided action for EPD refresh
     private static final String ACTION_EPD_REFRESH = "android.inno.refresh";
-
     private Context context;
-
     // Constructor to initialize the context
     public EPDManager(Context context) {
         this.context = context;
     }
-
     /**
      * Triggers a full refresh of the e-ink display.
      */
     public void refreshScreen() {
         try {
-
-          //  here supopose to be the refresh task
-
+            //  here supopose to be the refresh task
+            context.sendBroadcastAsUser(new Intent(ACTION_EPD_REFRESH), android.os.Process.myUserHandle());
         } catch (Exception e) {
             Log.e(TAG, "Failed to refresh E-ink screen: " + e.getMessage());
         }
