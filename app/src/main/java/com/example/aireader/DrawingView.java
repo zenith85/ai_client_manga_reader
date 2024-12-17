@@ -36,6 +36,7 @@ public class DrawingView extends View {
     private Bitmap imageBitmap; // The bitmap of the image from which to capture snippets
     private Activity activity; // Declare Activity variable
     private boolean isTemporaryText = false;
+    private int max_translations = 0;
 
 
     public DrawingView(Context context, AttributeSet attrs) {
@@ -108,6 +109,10 @@ public class DrawingView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                if (!AppConfig.isTranslateRequestAvailable(max_translations)){
+                    return false;
+                }
+                max_translations++;
                 initialX = x;
                 initialY = y;
                 currentRect = new Rect(x, y, x, y); // Start new rectangle
@@ -137,11 +142,13 @@ public class DrawingView extends View {
 
                 if (snippet != null) {
                     isTemporaryText = true;
-                    // After capturing the screen shot exactly on the size of the rectangle we will do this routine:
-                    // 1. Send the captured snippet to OCR and get the text back
-                    // 2. Fill it with white color
-                    // 3. Send the image to the server for OCR and get the text using the callback
-                    // 4. get back the text and put it inside the box (rect)
+                    /**
+                    * After capturing the screen shot exactly on the size of the rectangle we will do this routine:
+                    * 1. Send the captured snippet to OCR and get the text back
+                    * 2. Fill it with white color
+                    * 3. Send the image to the server for OCR and get the text using the callback
+                    * 4. get back the text and put it inside the box (rect)
+                    */
                     AI_OCR_CLIENT.getOcrText(snippet, LANG_DIRECTION, new AI_OCR_CLIENT.OcrCallback() {
                         @Override
                         public void onOcrResult(String result) {
