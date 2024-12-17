@@ -109,9 +109,6 @@ public class DrawingView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (!AppConfig.isTranslateRequestAvailable(max_translations)){
-                    return false;
-                }
                 max_translations++;
                 initialX = x;
                 initialY = y;
