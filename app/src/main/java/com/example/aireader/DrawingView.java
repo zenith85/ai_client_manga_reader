@@ -35,6 +35,8 @@ public class DrawingView extends View {
     private List<Bitmap> snippets = new ArrayList<>();
     private Bitmap imageBitmap; // The bitmap of the image from which to capture snippets
     private Activity activity; // Declare Activity variable
+    private boolean isTemporaryText = false;
+
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -77,6 +79,22 @@ public class DrawingView extends View {
         // Draw the current rectangle being drawn
         if (currentRect != null) {
             canvas.drawRect(currentRect, paint);
+            // If it's temporary, draw "TRANSLATING" inside the current rect
+            if (isTemporaryText) {
+                // Create a paint object for the background (white)
+                Paint bgPaint = new Paint();
+                bgPaint.setColor(Color.WHITE);
+                bgPaint.setStyle(Paint.Style.FILL);
+                canvas.drawRect(currentRect,bgPaint);
+                Paint textPaint = new Paint();
+                textPaint.setColor(Color.BLACK);
+                textPaint.setTextSize(30);
+                textPaint.setTextAlign(Paint.Align.CENTER);
+                // Calculate the x and y position to center the text inside the background
+                float x = currentRect.centerX();
+                float y = currentRect.centerY() - (textPaint.descent() + textPaint.ascent()) / 2;
+                canvas.drawText("TRANSLATING", x, y, textPaint);
+            }
         }
     }
 
@@ -113,12 +131,12 @@ public class DrawingView extends View {
             case MotionEvent.ACTION_UP:
                 // Store the rectangle and take a screenshot
                 rectangles.add(currentRect); // Store the rectangle
-                //invalidate();
                 // Capture the area as a screenshot when finger released after drawing a rectangle
                 Bitmap fullscreenshot = ScreenShotUtil.takeScreenshot(activity);
                 Bitmap snippet = ScreenShotUtil.cropScreenshot(fullscreenshot, currentRect, this);
 
                 if (snippet != null) {
+                    isTemporaryText = true;
                     // After capturing the screen shot exactly on the size of the rectangle we will do this routine:
                     // 1. Send the captured snippet to OCR and get the text back
                     // 2. Fill it with white color
@@ -127,6 +145,7 @@ public class DrawingView extends View {
                     AI_OCR_CLIENT.getOcrText(snippet, LANG_DIRECTION, new AI_OCR_CLIENT.OcrCallback() {
                         @Override
                         public void onOcrResult(String result) {
+                            isTemporaryText = false;
                             // Log OCR result or handle it as needed
                             Log.d(TAG, "OCR result: " + result);
                             try {
@@ -139,6 +158,7 @@ public class DrawingView extends View {
                                         fillSnippet(currentRect, translatedText); // Update the UI with the translated text
                                         copyTextToClipboard(translatedText); // Copy translated text to clipboard
                                         currentRect = null;
+
                                         invalidate(); // If you need to invalidate the UI
                                     }
                                 });
