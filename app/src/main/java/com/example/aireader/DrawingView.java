@@ -1,5 +1,4 @@
 package com.example.aireader;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,7 +14,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,9 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.content.ClipboardManager;
 import android.widget.Toast;
-
 import androidx.core.content.ContextCompat;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -128,22 +124,15 @@ public class DrawingView extends View {
                     // 2. Fill it with white color
                     // 3. Send the image to the server for OCR and get the text using the callback
                     // 4. get back the text and put it inside the box (rect)
-
                     AI_OCR_CLIENT.getOcrText(snippet, LANG_DIRECTION, new AI_OCR_CLIENT.OcrCallback() {
                         @Override
                         public void onOcrResult(String result) {
                             // Log OCR result or handle it as needed
                             Log.d(TAG, "OCR result: " + result);
-
                             try {
-                                // Assuming 'result' is a JSON string like {"translated_result": "translated text here"}
-                                JSONObject jsonResponse = new JSONObject(result);
-
-                                // Extract the translated result
-                                String translatedText = jsonResponse.getString("translated_result");
-
-                                // Ensure UI updates happen on the main thread
-                                activity.runOnUiThread(new Runnable() {
+                                JSONObject jsonResponse = new JSONObject(result); // Assuming 'result' is a JSON string like {"translated_result": "translated text here"}
+                                String translatedText = jsonResponse.getString("translated_result");// Extract the translated result
+                                activity.runOnUiThread(new Runnable() { // Ensure UI updates happen on the main thread
                                     @Override
                                     public void run() {
                                         // This will be executed on the main thread
@@ -184,32 +173,6 @@ public class DrawingView extends View {
                         }
                     });
 
-
-//                    AI_OCR_CLIENT.getOcrText(snippet, chosen_lang, new AI_OCR_CLIENT.OcrCallback() {
-//                        @Override
-//                        public void onOcrResult(String result) {
-//                            // Log OCR result or handle it as needed
-//                            Log.d(TAG, "OCR result: " + result);
-//                            // Ensure UI updates happen on the main thread
-//                            activity.runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    // This will be executed on the main thread
-//                                    fillSnippet(currentRect, result); // Update the UI here
-//                                    copyTextToClipboard(result);
-//                                    currentRect = null;
-//                                    invalidate();
-//                                }
-//                            });
-//                        }
-//                        @Override
-//                        public void onError(String error) {
-//                            // Handle the error if OCR fails
-//                            currentRect = null;
-//                            Toast.makeText(getContext(), "UnknownError", Toast.LENGTH_SHORT).show();
-//                            Log.e(TAG, "OCR Error: " + error);
-//                        }
-//                    });
                     Log.d(TAG, "Captured snippet: " + snippet.getWidth() + "x" + snippet.getHeight());
                 } else {
                     snippets.add(null);
@@ -244,11 +207,9 @@ public class DrawingView extends View {
             Log.d("DrawingView", "ImageBitmap is null or area is null.");
             return null; // Ensure the bitmap and area are valid
         }
-
         // Get the scale factors
         float scaleX = (float) imageBitmap.getWidth() / getWidth();
         float scaleY = (float) imageBitmap.getHeight() / getHeight();
-
         // Scale rectangle coordinates to match imageBitmap size
         int scaledLeft = (int) (area.left * scaleX);
         int scaledTop = (int) (area.top * scaleY);
@@ -268,8 +229,7 @@ public class DrawingView extends View {
             return null;
         }
 
-        // Create the cropped bitmap using scaled coordinates
-        try {
+        try {// Create the cropped bitmap using scaled coordinates
             return Bitmap.createBitmap(imageBitmap, scaledArea.left, scaledArea.top, scaledArea.width(), scaledArea.height());
         } catch (Exception e) {
             Log.d(TAG, "Exception while capturing area: " + e.getMessage());
@@ -277,16 +237,10 @@ public class DrawingView extends View {
         }
     }
 
-    // Clear all rectangles and snippets
-    public void clearRectangles() {
+    public void clearRectangles() { // Clear all rectangles and snippets
         rectangles.clear();
         snippets.clear();
         invalidate(); // Redraw the view
-    }
-
-    private boolean lang_segment() {
-
-        return true;
     }
 
     public List<Rect> getRectangles() {
@@ -294,59 +248,38 @@ public class DrawingView extends View {
     }
     // Make the snippet filled with white color to prepare to populate it with texts from OCR
     private void fillSnippet(Rect rect, String text) {
-        // Create a bitmap for the snippet with proper dimensions
-        Bitmap snippet = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
+        Bitmap snippet = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);        // Create a bitmap for the snippet with proper dimensions
         Canvas snippetCanvas = new Canvas(snippet);
-
-        // Create a paint object for white color
-        Paint fillPaint = new Paint();
+        Paint fillPaint = new Paint();        // Create a paint object for white color
         fillPaint.setStyle(Paint.Style.FILL);
         fillPaint.setColor(Color.WHITE);
         snippetCanvas.drawRect(0, 0, rect.width(), rect.height(), fillPaint);
-
-        // Create a TextPaint object for the text
-        TextPaint textPaint = new TextPaint();
+        TextPaint textPaint = new TextPaint();// Create a TextPaint object for the text
         textPaint.setColor(Color.BLACK);
         textPaint.setAntiAlias(true);
-
-        // Start with a large text size
-        int textSize = 30;
+        int textSize = 30; // Start with a large text size
         textPaint.setTextSize(textSize);
-
-        // Measure the text and decrease the text size until it fits within the rectangle
-        StaticLayout staticLayout;
+        StaticLayout staticLayout;// Measure the text and decrease the text size until it fits within the rectangle
         do {
             textPaint.setTextSize(textSize);
             staticLayout = new StaticLayout(text, textPaint, rect.width(),
                     Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false); // ALIGN_CENTER for center alignment
             textSize--;
         } while (staticLayout.getHeight() > rect.height() && textSize > 1); // Stop when it fits
-
-        // Draw the wrapped text on the canvas
-        float y = (rect.height() - staticLayout.getHeight()) / 2; // Center Y position
-
+        float y = (rect.height() - staticLayout.getHeight()) / 2; // Center Y position  // Draw the wrapped text on the canvas
         snippetCanvas.save();
         snippetCanvas.translate(0, y); // Translate vertically
         staticLayout.draw(snippetCanvas);
         snippetCanvas.restore();
-
-        // Store the snippet bitmap in the snippets list
-        snippets.add(snippet);
+        snippets.add(snippet); // Store the snippet bitmap in the snippets list
     }
 
 
     public void copyTextToClipboard(String text) {
-        // Get the ClipboardManager system service using ContextCompat
-        ClipboardManager clipboard = ContextCompat.getSystemService(getContext(), ClipboardManager.class);
-
-        // Create a ClipData object with the text to be copied
-        android.content.ClipData clip = android.content.ClipData.newPlainText("OCR Text", text);
-
-        // Set the ClipData to the clipboard
-        clipboard.setPrimaryClip(clip);
-
-        // Optionally show a toast message
-        Toast.makeText(this.getContext(), "Text copied to clipboard", Toast.LENGTH_SHORT).show();
+        ClipboardManager clipboard = ContextCompat.getSystemService(getContext(), ClipboardManager.class);        // Get the ClipboardManager system service using ContextCompat
+        android.content.ClipData clip = android.content.ClipData.newPlainText("OCR Text", text);        // Create a ClipData object with the text to be copied
+        clipboard.setPrimaryClip(clip);        // Set the ClipData to the clipboard
+        Toast.makeText(this.getContext(), "Text copied to clipboard", Toast.LENGTH_SHORT).show(); // Optionally show a toast message
     }
 
 }
