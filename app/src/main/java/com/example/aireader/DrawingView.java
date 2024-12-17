@@ -36,7 +36,6 @@ public class DrawingView extends View {
     private Bitmap imageBitmap; // The bitmap of the image from which to capture snippets
     private Activity activity; // Declare Activity variable
     private boolean isTemporaryText = false;
-    private int max_translations = 0;
 
 
     public DrawingView(Context context, AttributeSet attrs) {
@@ -113,7 +112,6 @@ public class DrawingView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                max_translations++;
                 initialX = x;
                 initialY = y;
                 currentRect = new Rect(x, y, x, y); // Start new rectangle
@@ -235,41 +233,6 @@ public class DrawingView extends View {
             Log.d(TAG, "Bitmap saved: " + file.getAbsolutePath());
         } catch (IOException e) {
             Log.d(TAG, "Error saving bitmap: " + e.getMessage());
-        }
-    }
-
-    public Bitmap captureArea(Rect area) {
-        if (imageBitmap == null || area == null) {
-            Log.d("DrawingView", "ImageBitmap is null or area is null.");
-            return null; // Ensure the bitmap and area are valid
-        }
-        // Get the scale factors
-        float scaleX = (float) imageBitmap.getWidth() / getWidth();
-        float scaleY = (float) imageBitmap.getHeight() / getHeight();
-        // Scale rectangle coordinates to match imageBitmap size
-        int scaledLeft = (int) (area.left * scaleX);
-        int scaledTop = (int) (area.top * scaleY);
-        int scaledRight = (int) (area.right * scaleX);
-        int scaledBottom = (int) (area.bottom * scaleY);
-
-        // Create a new scaled Rect to use for cropping
-        Rect scaledArea = new Rect(scaledLeft, scaledTop, scaledRight, scaledBottom);
-
-        // Ensure the scaled area is within the bounds of the imageBitmap
-        if (scaledArea.left < 0 || scaledArea.top < 0 ||
-                scaledArea.right > imageBitmap.getWidth() ||
-                scaledArea.bottom > imageBitmap.getHeight() ||
-                scaledArea.width() <= 0 ||
-                scaledArea.height() <= 0) {
-            Log.d(TAG, "Invalid scaled area dimensions or coordinates.");
-            return null;
-        }
-
-        try {// Create the cropped bitmap using scaled coordinates
-            return Bitmap.createBitmap(imageBitmap, scaledArea.left, scaledArea.top, scaledArea.width(), scaledArea.height());
-        } catch (Exception e) {
-            Log.d(TAG, "Exception while capturing area: " + e.getMessage());
-            return null; // Handle any exceptions that might arise during bitmap creation
         }
     }
 
