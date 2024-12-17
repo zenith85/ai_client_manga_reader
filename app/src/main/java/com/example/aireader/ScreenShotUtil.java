@@ -25,19 +25,19 @@ public class ScreenShotUtil {
         // Get the location of the DrawingView on the screen
         int[] location = new int[2];
         DrawingView.getLocationOnScreen(location);
-
-        // Calculate the absolute position of the rectangle on the screen
-        int left = Math.max(rect.left + location[0], 0);
-        int top = Math.max(rect.top + location[1], 0);
-        int right = Math.min(left + rect.width(), screenshot.getWidth());
-        int bottom = Math.min(top + rect.height(), screenshot.getHeight());
-
-        // Ensure the coordinates are valid
-        if (left >= right || top >= bottom) {
-            Log.d(TAG, "Invalid crop area dimensions.");
-            return null;
+        if (rect!=null){
+            // Calculate the absolute position of the rectangle on the screen
+            int left = Math.max(rect.left + location[0], 0);
+            int top = Math.max(rect.top + location[1], 0);
+            int right = Math.min(left + rect.width(), screenshot.getWidth());
+            int bottom = Math.min(top + rect.height(), screenshot.getHeight());
+            // Ensure the coordinates are valid
+            if (left >= right || top >= bottom) {
+                Log.d(TAG, "Invalid crop area dimensions.");
+                return null;
+            }
+            return Bitmap.createBitmap(screenshot, left, top, right - left, bottom - top);
         }
-
-        return Bitmap.createBitmap(screenshot, left, top, right - left, bottom - top);
+    return null;
     }
 }

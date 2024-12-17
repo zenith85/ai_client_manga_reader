@@ -67,13 +67,17 @@ public class DrawingView extends View {
         // Draw all rectangles and their corresponding snippets
         for (int i = 0; i < rectangles.size(); i++) {
             Rect rect = rectangles.get(i);
-            canvas.drawRect(rect, paint); // Draw the rectangle
+            if (rect!=null){
+                canvas.drawRect(rect, paint); // Draw the rectangle
+            }
 
             // If there is a snippet corresponding to this rectangle, draw it
             if (snippets.size() > i && snippets.get(i) != null) {
                 Bitmap snippet = snippets.get(i);
-                // Ensure the snippet is scaled to fit the rectangle
-                canvas.drawBitmap(snippet, null, rect, null); // Draw the snippet
+                if (snippet!=null){
+                    // Ensure the snippet is scaled to fit the rectangle
+                    canvas.drawBitmap(snippet, null, rect, null); // Draw the snippet
+                }
             }
         }
 
@@ -116,17 +120,19 @@ public class DrawingView extends View {
                 //MainActivity.drawingView.bringToFront();
                 return true;
             case MotionEvent.ACTION_MOVE:
-                if (x < initialX) {
-                    currentRect.left = x; // Shrink leftwards
-                } else {
-                    currentRect.right = x; // Expand rightwards
-                }
+                if (currentRect!=null){
+                    if (x < initialX) {
+                        currentRect.left = x; // Shrink leftwards
+                    } else {
+                        currentRect.right = x; // Expand rightwards
+                    }
 
-                // If moving up or down from initial position, adjust accordingly
-                if (y < initialY) {
-                    currentRect.top = y; // Shrink upwards
-                } else {
-                    currentRect.bottom = y; // Expand downwards
+                    // If moving up or down from initial position, adjust accordingly
+                    if (y < initialY) {
+                        currentRect.top = y; // Shrink upwards
+                    } else {
+                        currentRect.bottom = y; // Expand downwards
+                    }
                 }
                 invalidate(); // Redraw the view
                 return true;
@@ -135,6 +141,7 @@ public class DrawingView extends View {
                 rectangles.add(currentRect); // Store the rectangle
                 // Capture the area as a screenshot when finger released after drawing a rectangle
                 Bitmap fullscreenshot = ScreenShotUtil.takeScreenshot(activity);
+
                 Bitmap snippet = ScreenShotUtil.cropScreenshot(fullscreenshot, currentRect, this);
 
                 if (snippet != null) {
@@ -159,10 +166,11 @@ public class DrawingView extends View {
                                     @Override
                                     public void run() {
                                         // This will be executed on the main thread
-                                        fillSnippet(currentRect, translatedText); // Update the UI with the translated text
-                                        copyTextToClipboard(translatedText); // Copy translated text to clipboard
-                                        currentRect = null;
-
+                                        if (currentRect!=null){
+                                            fillSnippet(currentRect, translatedText); // Update the UI with the translated text
+                                            copyTextToClipboard(translatedText); // Copy translated text to clipboard
+                                            currentRect = null;
+                                        }
                                         invalidate(); // If you need to invalidate the UI
                                     }
                                 });
@@ -173,7 +181,9 @@ public class DrawingView extends View {
                                     @Override
                                     public void run() {
                                         // Handle the error case on the main thread
-                                        fillSnippet(currentRect, "Error parsing response");
+                                        if (currentRect!=null){
+                                            fillSnippet(currentRect, "Error parsing response");
+                                        }
                                         currentRect = null;
                                         invalidate();
                                     }
@@ -189,7 +199,9 @@ public class DrawingView extends View {
                                 @Override
                                 public void run() {
                                     // Handle the error on the main thread
-                                    fillSnippet(currentRect, "OCR failed");
+                                    if (currentRect!=null){
+                                        fillSnippet(currentRect, "OCR failed");
+                                    }
                                     currentRect = null;
                                     invalidate();
                                 }
