@@ -28,10 +28,10 @@ public class Show_Information_dialog extends Dialog {
 
         // Set up the images array with your images (example: image1, image2, etc.)
         images = new int[] {
-                R.drawable.astrogirl,  // Your first image
-                R.drawable.astrogirl1,  // Your second image
-                R.drawable.astrogirl2,  // Your third image
-                R.drawable.astrogirl3   // Your fourth image
+                R.drawable.astrogirl2,  // Your first image
+                R.drawable.ib,  // Your second image
+                R.drawable.ir,  // Your third image
+                R.drawable.i_f   // Your fourth image
         };
 
         // Set initial images in the ImageViews
