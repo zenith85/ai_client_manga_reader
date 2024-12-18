@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Environment;
+import android.os.Handler;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -22,6 +23,9 @@ import java.util.List;
 import android.content.ClipboardManager;
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
+
+import com.example.aireader.AppConfig;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,11 +40,11 @@ public class DrawingView extends View {
     private Bitmap imageBitmap; // The bitmap of the image from which to capture snippets
     private Activity activity; // Declare Activity variable
     private boolean isTemporaryText = false;
-
+    private boolean isDrawingLocked = false;
+    private boolean isActionLocked = false;
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //paint.setStrokeWidth(5);
         if (context instanceof Activity) {
             this.activity = (Activity) context; // Cast context to Activity
         }
@@ -51,7 +55,6 @@ public class DrawingView extends View {
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(5);
-        //paint.setColor(0xFFFF0000); // Red color for the rectangle
     }
 
     public void setImageBitmap(Bitmap bitmap) {
@@ -105,17 +108,19 @@ public class DrawingView extends View {
     int initialX, initialY;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!select_mode){return false;}
+        if (!select_mode || isDrawingLocked){return false;}
 
         int x = (int) event.getX();
         int y = (int) event.getY();
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                if (isDrawingLocked || isActionLocked) {
+                    return false;  // Prevent drawing new rectangle if locked
+                }
                 initialX = x;
                 initialY = y;
                 currentRect = new Rect(x, y, x, y); // Start new rectangle
-                //MainActivity.drawingView.bringToFront();
                 return true;
             case MotionEvent.ACTION_MOVE:
                 if (currentRect!=null){
@@ -135,6 +140,9 @@ public class DrawingView extends View {
                 invalidate(); // Redraw the view
                 return true;
             case MotionEvent.ACTION_UP:
+                // Lock drawing until the current rectangle is processed
+                isDrawingLocked = true;
+                isActionLocked = true;
                 // Store the rectangle and take a screenshot
                 rectangles.add(currentRect); // Store the rectangle
                 // Capture the area as a screenshot when finger released after drawing a rectangle
@@ -154,6 +162,7 @@ public class DrawingView extends View {
                     AI_OCR_CLIENT.getOcrText(snippet, LANG_DIRECTION, new AI_OCR_CLIENT.OcrCallback() {
                         @Override
                         public void onOcrResult(String result) {
+                            isActionLocked = false;
                             isTemporaryText = false;
                             // Log OCR result or handle it as needed
                             Log.d(TAG, "OCR result: " + result);
@@ -213,6 +222,15 @@ public class DrawingView extends View {
                     Log.d(TAG, "Snippet capture failed.");
                 }
                 invalidate(); // Redraw the view
+
+                // Unlock drawing after a delay
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isDrawingLocked = false; // Allow drawing again
+                    }
+                }, AppConfig.DRAWING_LOCK_TIME);
+
                 return true;
         }
         return super.onTouchEvent(event);
@@ -239,6 +257,7 @@ public class DrawingView extends View {
     public void clearRectangles() { // Clear all rectangles and snippets
         rectangles.clear();
         snippets.clear();
+        Log.d(TAG, "rects clear is being called :" + rectangles.size() + " rects" );
         invalidate(); // Redraw the view
     }
 

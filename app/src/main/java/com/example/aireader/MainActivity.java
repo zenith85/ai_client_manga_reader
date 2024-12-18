@@ -174,9 +174,10 @@ public class MainActivity extends AppCompatActivity implements AICallback {
         // Spinner initialization
         spinner_init();
 
-        if (!drawingView.select_mode){
-            Log.d(TAG,"Current Selection Mode = false");
+
             chosenImageView.setOnTouchListener((v, event) -> {
+                if (!drawingView.select_mode){
+                    Log.d(TAG,"Current Selection Mode = false");
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
                         // Store initial touch position for pan movement
@@ -206,12 +207,14 @@ public class MainActivity extends AppCompatActivity implements AICallback {
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
                         break;
+
+                }
+                } else{
+                    Log.d(TAG,"Current Selection Mode = true");
                 }
                 return true;
             });
-        } else{
-            Log.d(TAG,"Current Selection Mode = true");
-        }
+
     }
 
 
