@@ -6,6 +6,36 @@
     android:layout_gravity="center"
     android:padding="8dp">
 
+    <!-- Squares for the filling effect -->
+    <LinearLayout
+        android:id="@+id/loading_squares"
+        android:layout_width="40dp"
+        android:layout_height="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"> <!-- Initially hidden -->
+        <View
+            android:id="@+id/square1"
+            android:layout_width="10dp"
+            android:layout_height="5dp"
+            android:layout_margin="2dp"
+            android:background="@android:color/darker_gray" />
+        <View
+            android:id="@+id/square2"
+            android:layout_width="10dp"
+            android:layout_height="5dp"
+            android:layout_margin="2dp"
+            android:background="@android:color/darker_gray" />
+        <View
+            android:id="@+id/square3"
+            android:layout_width="10dp"
+            android:layout_height="5dp"
+            android:layout_margin="2dp"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/PlusButton"
         android:layout_width="40dp"

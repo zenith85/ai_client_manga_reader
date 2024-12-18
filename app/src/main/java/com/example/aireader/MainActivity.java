@@ -133,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements AICallback {
                 mainLayout.addView(floatingTool);
                 floatingTool.setX(dm.widthPixels*xPercent);
                 floatingTool.setY(dm.heightPixels*yPercent);
+                // Initialized the time loading squares
+                drawingView.setloadingsquare();
                 // Initialize zoom buttons
                 Button zoomInButton = findViewById(R.id.PlusButton);
                 Button zoomOutButton = findViewById(R.id.MinusButton);

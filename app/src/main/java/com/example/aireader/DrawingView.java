@@ -42,6 +42,9 @@ public class DrawingView extends View {
     private boolean isTemporaryText = false;
     private boolean isDrawingLocked = false;
     private boolean isActionLocked = false;
+    private View _sqr1;
+    private View _sqr2;
+    private View _sqr3;
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -55,11 +58,23 @@ public class DrawingView extends View {
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(5);
+        // Get a reference to MainActivity (assuming it's the current Activity)
     }
 
     public void setImageBitmap(Bitmap bitmap) {
         this.imageBitmap = bitmap; // Set the image bitmap to be used for cropping
         invalidate(); // Redraw the view
+    }
+
+    public void setloadingsquare() { //this is called from the mainactivity
+        if (activity != null) {
+            _sqr1 = activity.findViewById(R.id.square1);
+            _sqr2 = activity.findViewById(R.id.square2);
+            _sqr3 = activity.findViewById(R.id.square3);
+
+        } else {
+            Log.e(TAG, "Activity is null! Cannot find views.");
+        }
     }
 
     @Override
@@ -222,7 +237,7 @@ public class DrawingView extends View {
                     Log.d(TAG, "Snippet capture failed.");
                 }
                 invalidate(); // Redraw the view
-
+                startloadingtimer(1);
                 // Unlock drawing after a delay
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -298,6 +313,34 @@ public class DrawingView extends View {
         android.content.ClipData clip = android.content.ClipData.newPlainText("OCR Text", text);        // Create a ClipData object with the text to be copied
         clipboard.setPrimaryClip(clip);        // Set the ClipData to the clipboard
         Toast.makeText(this.getContext(), "Text copied to clipboard", Toast.LENGTH_SHORT).show(); // Optionally show a toast message
+    }
+
+    public void startloadingtimer(int counter) {
+        if (counter == 1 && _sqr1 != null) { // Paint squares black one by one based on the counter
+            _sqr1.setBackgroundColor(Color.BLACK);
+        } else if (counter == 2 && _sqr2 != null) {
+            _sqr2.setBackgroundColor(Color.BLACK);
+        } else if (counter == 3 && _sqr3 != null) {
+            _sqr3.setBackgroundColor(Color.BLACK);
+        }
+        if (counter < 3) { // Call the next square after a 1-second delay, up to 3 squares
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startloadingtimer(counter + 1);
+                }
+            }, 1000); // Delay for the next square
+        }
+        if (counter == 3) { // Reset all squares after 3 seconds
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    _sqr1.setBackgroundColor(Color.GRAY);
+                    _sqr2.setBackgroundColor(Color.GRAY);
+                    _sqr3.setBackgroundColor(Color.GRAY);
+                }
+            }, 1000);
+        }
     }
 
 }
