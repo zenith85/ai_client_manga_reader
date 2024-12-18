@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements AICallback {
     private AlertDialog textDialog;
 
     private Spinner lang_conv_spinner;
-
+    private EPDManager _EPDManager = new EPDManager(MainActivity.this);
     private float originalScale = 1.0f;
     private float originalX = 0.0f;
     private float originalY = 0.0f;
@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements AICallback {
             floatingTool.setX(dm.widthPixels*xPercent);
             floatingTool.setY(dm.heightPixels*yPercent);
             resetView();  // Reset the zoom and position
-            EPDManager _EPDManager = new EPDManager(MainActivity.this);
             _EPDManager.refreshScreen();
         });
 
@@ -299,6 +298,7 @@ public class MainActivity extends AppCompatActivity implements AICallback {
                 }
             }
         }
+       // _EPDManager.refreshScreen();
     }
     private void zoomIn() {
         currentScale *= 1.2f;
@@ -316,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements AICallback {
             if (fileDescriptor != null) {
                 pdfRenderer = new PdfRenderer(fileDescriptor);
                 showPage(currentPageIndex);
+                _EPDManager.refreshScreen();
             }
         } catch (IOException e) {
             e.printStackTrace();
