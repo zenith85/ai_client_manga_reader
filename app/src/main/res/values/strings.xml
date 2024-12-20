@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">바벨문어</string>
+    <string name="app_name">우주만화</string>
         <!-- Other string resources -->
     <string-array name="spinner_values">
         <item>ENG to KOR</item>

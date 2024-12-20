@@ -121,6 +121,7 @@ public class DrawingView extends View {
     }
 
     int initialX, initialY;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!select_mode || isDrawingLocked){return false;}

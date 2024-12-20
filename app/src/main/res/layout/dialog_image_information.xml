@@ -40,13 +40,13 @@
 
             <!-- Intro text below the left image -->
             <TextView
-                android:id="@+id/intro_text_2"
+                android:id="@+id/nextImageText"
                 android:layout_width="wrap_content"
                 android:textAlignment="center"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/gmarketsansttfmedium"
-                android:text="Click on top left the Next Tip! for helpful instructions"
+                android:text="Next tip"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
@@ -55,22 +55,14 @@
         <!-- Right side: Image to show (click to change) -->
         <ImageView
             android:id="@+id/right_image_view"
-            android:layout_width="136dp"
-            android:layout_height="154dp"
+            android:layout_width="60dp"
+            android:layout_height="117dp"
             android:layout_gravity="bottom"
-            android:paddingEnd="15dp"
+            android:paddingStart="-60dp"
+            android:paddingEnd="-60dp"
             android:src="@drawable/spacerabbit" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/nextImageText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="Next Tip!"
-        android:textColor="#000" />
 
     <!-- Text to change images -->
 
