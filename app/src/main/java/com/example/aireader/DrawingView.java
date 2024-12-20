@@ -101,6 +101,19 @@ public class DrawingView extends View {
         // Draw the current rectangle being drawn
         if (currentRect != null) {
             canvas.drawRect(currentRect, paint);
+            // Check the size of the rectangle and provide feedback
+            String feedback = getRectangleFeedback(currentRect);
+            if (feedback != null) {
+                Paint textPaint = new Paint();
+                textPaint.setColor(Color.RED); // Feedback text color
+                textPaint.setTextSize(40);
+                textPaint.setTextAlign(Paint.Align.CENTER);
+
+                // Draw the feedback text near the rectangle
+                float x = currentRect.centerX();
+                float y =  currentRect.top - 20; // Adjust the position above the rectangle
+                canvas.drawText(feedback, x, y, textPaint);
+            }
             // If it's temporary, draw "TRANSLATING" inside the current rect
             if (isTemporaryText) {
                 // Create a paint object for the background (white)
@@ -119,6 +132,27 @@ public class DrawingView extends View {
             }
         }
     }
+
+    private String getRectangleFeedback(Rect rect) {
+        // Define the size limits
+        final int MIN_AREA = AppConfig.RECT_MIN_AREA;   // Minimum allowed area
+        final int MAX_AREA = AppConfig.RECT_MAX_AREA; // Maximum allowed area
+
+        if (rect == null) return null;
+
+        // Calculate the area of the rectangle
+        int rectArea = rect.width() * rect.height();
+
+        // Provide feedback based on the area
+        if (rectArea < MIN_AREA) {
+            return "Too small!";
+        } else if (rectArea > MAX_AREA) {
+            return "Too large!";
+        }
+
+        return null; // Rectangle size is valid, no feedback needed
+    }
+
 
     int initialX, initialY;
 
@@ -156,11 +190,19 @@ public class DrawingView extends View {
                 invalidate(); // Redraw the view
                 return true;
             case MotionEvent.ACTION_UP:
-                // Lock drawing until the current rectangle is processed
-                isDrawingLocked = true;
-                isActionLocked = true;
-                // Store the rectangle and take a screenshot
-                rectangles.add(currentRect); // Store the rectangle
+                if (currentRect != null) {
+                    // Validate rectangle size
+                    if (isRectangleValid(currentRect)) {
+                        rectangles.add(currentRect); // Save the rectangle
+                        isDrawingLocked = true; // Lock further actions until processed
+                        isActionLocked = true;
+                    } else {
+                        currentRect = null; // Discard invalid rectangle
+                        return false;
+                    }
+                    invalidate(); // Redraw the view
+                }
+
                 // Capture the area as a screenshot when finger released after drawing a rectangle
                 Bitmap fullscreenshot = ScreenShotUtil.takeScreenshot(activity);
 
@@ -250,6 +292,32 @@ public class DrawingView extends View {
                 return true;
         }
         return super.onTouchEvent(event);
+    }
+
+    private boolean isRectangleValid(Rect rect) {
+        // Define minimum and maximum area constraints
+        final int MIN_AREA = AppConfig.RECT_MIN_AREA;  // Example: Minimum area in pixels²
+        final int MAX_AREA = AppConfig.RECT_MAX_AREA; // Example: Maximum area in pixels²
+
+        if (rect == null) return false;
+
+        // Calculate width, height, and area of the rectangle
+        int rectWidth = rect.width();
+        int rectHeight = rect.height();
+        int rectArea = rectWidth * rectHeight;
+
+        // Check if the rectangle meets size constraints
+        if (rectArea < MIN_AREA) {
+            Toast.makeText(getContext(), "Rectangle is too small!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (rectArea > MAX_AREA) {
+            Toast.makeText(getContext(), "Rectangle is too large!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true; // Valid rectangle
     }
 
     private void saveBitmapToFile(Bitmap bitmap, String fileName) {
