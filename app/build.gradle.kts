@@ -55,6 +55,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     implementation("com.rmtheis:tess-two:9.1.0")
     implementation("org.opencv:opencv:4.10.0")
-
+    implementation("com.github.hero99team:FolioReader-Android:0.2.5")
     // Remove duplicate dependencies
 }
