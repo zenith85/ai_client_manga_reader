@@ -381,6 +381,9 @@ public class MainActivity extends AppCompatActivity implements AICallback {
         if (pdfRenderer != null && currentPageIndex < pdfRenderer.getPageCount() - 1) {
             currentPageIndex++;
             showPage(currentPageIndex);
+            resetView();  // Reset the zoom and position
+            drawingView.clearRectangles();
+            //_EPDManager.refreshScreen();
         }
     }
 
@@ -388,6 +391,9 @@ public class MainActivity extends AppCompatActivity implements AICallback {
         if (pdfRenderer != null && currentPageIndex > 0) {
             currentPageIndex--;
             showPage(currentPageIndex);
+            resetView();  // Reset the zoom and position
+            drawingView.clearRectangles();
+            //_EPDManager.refreshScreen();
         }
     }
 

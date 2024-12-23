@@ -16,11 +16,14 @@ public class Show_Information_dialog extends Dialog {
     private TextView nextImageText;
     private int[] images; // The array of images
     private int currentImageIndex = 0;
+    private EPDManager _EPDManager;
 
     public Show_Information_dialog(@NonNull Context context) {
         super(context);
         setContentView(R.layout.dialog_image_information);
-
+        // Pass the context to the EPDManager constructor
+        _EPDManager = new EPDManager(context);
+        _EPDManager.refreshScreen();
         // Initialize ImageViews and TextView
         leftImageView = findViewById(R.id.left_image_view);
         rightImageView = findViewById(R.id.right_image_view);
@@ -52,6 +55,7 @@ public class Show_Information_dialog extends Dialog {
             @Override
             public void onClick(View v) {
                 dismiss(); // Close the dialog
+                _EPDManager.refreshScreen();
             }
         });
     }
