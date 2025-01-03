@@ -42,6 +42,14 @@ public class AI_OCR_CLIENT {
                 outputStream.write(languageBytes);
                 Log.d("AI_OCR_CLIENT", "Language sent: " + language);
 
+                // Send the translation method (Google or AI)
+                // temporary giving up
+                String translationMethod = "google";
+                byte[] methodBytes = translationMethod.getBytes("UTF-8");
+                outputStream.writeInt(methodBytes.length);
+                outputStream.write(methodBytes);
+                Log.d("AI_OCR_CLIENT", "Translation method sent: " + translationMethod);
+
                 // Send the image data
                 outputStream.writeInt(imageData.length); // Send the length of the image
                 outputStream.write(imageData); // Send the actual image
